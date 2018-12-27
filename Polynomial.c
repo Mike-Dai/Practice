@@ -179,39 +179,84 @@ void SubPoly(Polynomial p1, Polynomial p2, Polynomial p3) {
     }
 }
 
-Polynomial AscendPoly(p1) {
-    Polynomial head, p, prev, tail, tmp;
-    head = (Polynomial)malloc(sizeof(List));
-    tail = prev = head;
-    p = p1->next;
-    tmp = (Polynomial)malloc(sizeof(List));
-    tmp->coefficient = p->coefficient;
-    tmp->exponent = p->exponent;
-    tail->next = tmp;
-    tmp->next = NULL;
-    tail = tmp;
-    p = p->next;
-    while (p != NULL) {
-        tmp = (Polynomial)malloc(sizeof(List));
-        if (p->exponent > tail->exponent) {
-            tmp->coefficient = p->coefficient;
-            tmp->exponent = p->exponent;
-            tail->next = tmp;
-            tmp->next = NULL;
-            prev = prev->next;
-            tail = tmp;
-            p = p->next;
+void AscendPoly(Polynomial p1) {
+    Polynomial i, j;
+    int coe, exp;
+    for (i = p1->next; i != NULL; i = i->next) {
+        for (j = i->next; j != NULL; j = j->next) {
+            if (j->exponent < i->exponent) {
+                coe = i->coefficient;
+                exp = i->exponent;
+                i->coefficient = j->coefficient;
+                i->exponent = j->exponent;
+                j->coefficient = coe;
+                j->exponent = exp;
+            }
         }
-        else if (p->exponent < tail->exponent) {
-            tmp->coefficient = p->coefficient;
-            tmp->exponent = p->exponent;
-            prev->next = p
-        }
-
     }
 }
-void MultiPoly(Polynomial p1, Polynomial p2, Polynomial p3) {
 
+void DescendPoly(Polynomial p1) {
+    Polynomial i, j;
+    int coe, exp;
+    for (i = p1->next; i != NULL; i = i->next) {
+        for (j = i->next; j != NULL; j = j->next) {
+            if (j->exponent > i->exponent) {
+                coe = i->coefficient;
+                exp = i->exponent;
+                i->coefficient = j->coefficient;
+                i->exponent = j->exponent;
+                j->coefficient = coe;
+                j->exponent = exp;
+            }
+        }
+    }
+}
+
+void MultiPoly(Polynomial p1, Polynomial p2, Polynomial p3) {
+    int max_expo, min_expo;
+    Polynomial pa, pb, tail;
+    size_t i;
+    DescendPoly(p1);
+    DescendPoly(p2);
+    max_expo = p1->next->exponent + p2->next->exponent;
+    AscendPoly(p1);
+    AscendPoly(p2);
+    min_expo = p1->next->exponent + p2->next->exponent;
+    DescendPoly(p1);
+    pa = p1->next;
+    pb = p2->next;
+    tail = p3;
+    for (i = max_expo; i >= min_expo; i--) {
+        pa = p1->next;
+        while (pa != NULL && pa->exponent > i) {
+            pa = pa->next;
+        }
+        while (pa != NULL && pb != NULL && pa->exponent + pb->exponent < i) {
+            pb = pb->next;
+        }
+        while (pa != NULL && pb != NULL) {
+            if (pa->exponent + pb->exponent == i) {
+                if (pa->coefficient + pb->coefficient != 0) {
+                    Polynomial tmp;
+                    tmp = (Polynomial)malloc(sizeof(List));
+                    tmp->coefficient = pa->coefficient * pb->coefficient;
+                    tmp->exponent = pa->exponent + pb->exponent;
+                    tail->next = tmp;
+                    tmp->next = NULL;
+                    tail = tmp;
+                }
+                pa = pa->next;
+                pb = pb->next;
+            }
+            else if (pa->exponent + pb->exponent < i) {
+                pb = pb->next;
+            }
+            else if (pa->exponent + pb->exponent > i) {
+                pa = pa->next;
+            }
+        }
+    }
 }
 
 int main()
@@ -224,11 +269,21 @@ int main()
     p3 = CreatePoly(0);
     InputPoly(p1);
     InputPoly(p2);
+    /*
     AddPoly(p1, p2, p3);
     OutputPoly(p3);
     MakeEmpty(p3);
     SubPoly(p1, p2, p3);
     OutputPoly(p3);
     MakeEmpty(p3);
+    */
+    MultiPoly(p1, p2, p3);
+    OutputPoly(p3);
+    #if 0
+    AscendPoly(p1);
+    DescendPoly(p2);
+    OutputPoly(p1);
+    OutputPoly(p2);
+    #endif // 0
     return 0;
 }
