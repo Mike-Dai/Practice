@@ -27,8 +27,8 @@ void Push(int x, Stack S) {
     PtrToNode tmp;
     tmp = (Stack)malloc(sizeof(List));
     tmp->value = x;
+    tmp->next = S->next;
     S->next = tmp;
-    tmp->next = NULL;
 }
 
 int Top(Stack S) {
