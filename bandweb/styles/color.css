@@ -61,3 +61,11 @@ a:active {
 	background-color: #ec8;
 }
 
+#navigation a.here:link,
+#navigation a.here:visited,
+#navigation a.here:hover,
+#navigation a.here:active {
+	color:#eef;
+	background-color: #799;
+}
+
