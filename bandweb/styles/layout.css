@@ -79,3 +79,14 @@ body {
 	position: relative;
 	overflow: hidden;
 }
+
+#frame {
+	position: absolute;
+	top:0;
+	left:0;
+	z-index: 99;
+}
+
+#imagegallery li {
+	display:inline;
+}
