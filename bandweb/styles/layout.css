@@ -73,3 +73,9 @@ body {
 	background-image: url(../images/drummer.gif);
 }
 
+#slideshow {
+	width:150px;
+	height:150px;
+	position: relative;
+	overflow: hidden;
+}
