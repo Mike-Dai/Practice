@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+
+<head>
+	<title>About</title>
+</head>
+
+<body>
+	<h1>About</h1>
+	<img src="{% static 'images/cat.jpg' %}" alt="Picture of cat" />
+	<br />
+	<p>The image of the cat was taken from {{ name }}. </p>
+	<br />
+	<a href="/rango/">index</a>
+</body>
+
+</html>
