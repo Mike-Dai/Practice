@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from rango.models import Category, Page
+from rango.models import Category, Page, UserProfile
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 
 def index(request):
@@ -33,6 +33,7 @@ def index(request):
 	"""
 	response = render(request, 'rango/index.html', context_dict)
 	return response
+	
 
 def about(request):
 	context_dict = {'name': "Deviant Art by LizzyChrome"}
@@ -141,3 +142,22 @@ def restricted(request):
 def user_logout(request):
 	logout(request)
 	return HttpResponseRedirect('/rango/')
+
+def url_track(request):
+	page_id = None
+	url = '/rango/'
+	if request.method == 'GET':
+		if 'page_id' in request.GET:
+			page_id = request.GET['page_id']
+			try:
+				page = Page.objects.get(id=page_id)
+				page.views = page.views + 1
+				page.save()
+				url = page.url
+			except:
+				pass
+	return redirect(url)
+
+def register_profile(request):
+	user = UserProfile.objects.get(username=request.username)
+	return render(request, 'rango/profile_registration.html',{})
