@@ -13,4 +13,5 @@ urlpatterns = [
 	url(r'^logout/$', views.user_logout, name='logout'),
 	url(r'^goto/$', views.url_track, name='goto'),
 	url(r'^add_profile/$', views.register_profile, name='add_profile'),
+	url(r'^like_category/$', views.like_category, name='like_category'),
 	]
