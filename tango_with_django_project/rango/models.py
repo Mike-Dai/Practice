@@ -36,3 +36,11 @@ class UserProfile(models.Model):
 
 	def __unicode__(self):
 		return self.user.username
+
+class Blog(models.Model):
+	title = models.CharField(max_length=128)
+	author = models.CharField(max_length=128)
+	content = models.CharField(max_length=256)
+
+	def __unicode__(self):
+		return self.title

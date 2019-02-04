@@ -6,8 +6,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from rango.models import Category, Page, UserProfile
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from rango.models import Category, Page, UserProfile, Blog
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm, BlogForm
 
 def index(request):
 	#request.session.set_test_cookie()
@@ -175,3 +175,21 @@ def like_category(request):
 			cat.likes = likes
 			cat.save()
 	return HttpResponse(likes)
+
+def blog(request):
+	blog_list = Blog.objects.order_by('title')
+	context_dict = {'blogs':blog_list}
+	return render(request, 'rango/blog.html', context_dict)
+
+def add_blog(request):
+	if request.method == 'POST':
+		form = BlogForm(request.POST)
+		if form.is_valid():
+			form.save(commit=True)
+			return blog(request)
+		else:
+			print form.errors
+	else:
+		form = BlogForm()
+	return render(request, 'rango/add_blog.html', {'form':form})
+

@@ -14,4 +14,6 @@ urlpatterns = [
 	url(r'^goto/$', views.url_track, name='goto'),
 	url(r'^add_profile/$', views.register_profile, name='add_profile'),
 	url(r'^like_category/$', views.like_category, name='like_category'),
+	url(r'^blog/$', views.blog, name='blog'),
+	url(r'^blog/add_blog/$',views.add_blog, name='add_blog'),
 	]

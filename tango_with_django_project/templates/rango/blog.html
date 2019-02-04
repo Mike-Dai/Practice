@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog{% endblock %}
+
+{% block body_block %}
+	<div class="page-header">
+		<h1>Blog</h1>
+	</div>
+	<a href="add_blog">Add a blog</a>
+	<div>
+		{% for blog in blogs %}
+			{{ blog.title }}<br />
+			{{ blog.author }}<br />
+			{{ blog.content }}<br />
+		{% endfor %}
+	</div>
+{% endblock %}
